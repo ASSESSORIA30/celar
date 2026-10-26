@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 650" role="img" aria-label="Esquema conceptual de muro con piezas de hormigón celular">
+<defs>
+<pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="6" cy="8" r="2.1" fill="#cbd1c4" opacity=".65"/><circle cx="20" cy="19" r="1.4" fill="#cbd1c4" opacity=".65"/></pattern>
+<filter id="shadow"><feDropShadow dx="0" dy="15" stdDeviation="14" flood-color="#233728" flood-opacity=".10"/></filter>
+</defs>
+<rect width="1040" height="650" fill="#f1f2ec"/>
+<path d="M0 532H1040" stroke="#d6ddd4"/>
+<text x="75" y="74" fill="#697e6e" font-family="Arial" font-size="13" letter-spacing="3">CONCEPTO CONSTRUCTIVO</text>
+<text x="75" y="123" fill="#26382a" font-family="Georgia" font-size="39">Piezas de hormigón celular</text>
+<g filter="url(#shadow)">
+<path d="M253 274L626 173L781 257L406 359Z" fill="#f9faf5" stroke="#718576" stroke-width="3"/>
+<path d="M253 274L406 359V525L253 440Z" fill="#d7dcd1" stroke="#788a7e" stroke-width="3"/>
+<path d="M406 359L781 257V422L406 525Z" fill="#ebeee5" stroke="#718576" stroke-width="3"/>
+<path d="M406 359L781 257V422L406 525Z" fill="url(#dots)" opacity=".8"/>
+<path d="M253 359L406 444L781 342M253 319L406 403L781 302M315 310L315 474M486 337L486 502M606 304L606 469M715 275L715 439" stroke="#bbc6ba" stroke-width="3" fill="none"/>
+<path d="M253 274L406 359M315 255L468 340M377 237L530 322M440 220L593 305M501 203L654 288M566 188L720 272" stroke="#becabd" stroke-width="2"/>
+</g>
+<path d="M693 205L841 153H950" stroke="#6d8d74" stroke-width="2" fill="none"/>
+<circle cx="693" cy="205" r="6" fill="#6d8d74"/>
+<text x="842" y="130" fill="#34493b" font-family="Arial" font-size="15" font-weight="bold">Material</text>
+<text x="842" y="151" fill="#68786b" font-family="Arial" font-size="12">Producto por definir</text>
+<path d="M531 424L675 526H883" stroke="#6d8d74" stroke-width="2" fill="none"/>
+<circle cx="531" cy="424" r="6" fill="#6d8d74"/>
+<text x="708" y="553" fill="#34493b" font-family="Arial" font-size="15" font-weight="bold">Juntas y encuentros</text>
+<text x="708" y="572" fill="#68786b" font-family="Arial" font-size="12">Por definir en el proyecto</text>
+<rect x="62" y="553" width="560" height="59" fill="#e4eae1"/>
+<text x="81" y="577" fill="#425547" font-family="Arial" font-size="12">Esquema ilustrativo, no a escala. No define muros portantes,</text>
+<text x="81" y="594" fill="#425547" font-family="Arial" font-size="12">aislamientos, acabados, resistencia ni detalles ejecutivos.</text>
+</svg>

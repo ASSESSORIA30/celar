@@ -1,0 +1,26 @@
+'use client';
+import { useState } from 'react';
+import { Download, RotateCcw } from 'lucide-react';
+import original from '@/config/catalog.json';
+
+type Catalog=typeof original;
+export function EditorPanel(){
+ const [data,setData]=useState<Catalog>(structuredClone(original));
+ const [error,setError]=useState('');
+ const updateBrand=(key:keyof Catalog['brand'],value:string)=>setData(x=>({...x,brand:{...x.brand,[key]:value}}));
+ const updatePrice=(key:keyof Catalog['pricing'],value:string)=>setData(x=>({...x,pricing:{...x.pricing,[key]:['kitPerM2','assemblyPerM2','rangeMin','rangeMax'].includes(key)?Number(value):value}}));
+ const updateModel=(i:number,key:keyof Catalog['models'][number],value:string)=>setData(x=>({...x,models:x.models.map((m,j)=>j===i?{...m,[key]:key==='area'?Number(value):value}:m)}));
+ const save=()=>{
+  if(data.pricing.kitPerM2<=0||data.pricing.assemblyPerM2<0||data.pricing.rangeMin<=0||data.pricing.rangeMax<=data.pricing.rangeMin||data.models.some(m=>m.area<data.pricing.rangeMin||m.area>data.pricing.rangeMax||!m.name||!m.slug)){
+   setError('Revisa los precios, el rango y las superficies.');return;
+  }
+  setError('');
+  const file=new Blob([JSON.stringify(data,null,2)+'\n'],{type:'application/json'});
+  const href=URL.createObjectURL(file);const anchor=document.createElement('a');anchor.href=href;anchor.download='catalog.json';anchor.click();URL.revokeObjectURL(href);
+ };
+ return <div className="grid lg:grid-cols-[1.1fr_.9fr] gap-8"><div className="space-y-6">
+  <div className="editor-panel"><h2 className="font-display display-font text-3xl mb-6">La marca</h2><div className="grid sm:grid-cols-2 gap-5">{([['name','Marca'],['descriptor','Descripción'],['tagline','Mensaje principal'],['phone','Teléfono'],['email','Email'],['whatsappNumber','WhatsApp (solo dígitos)']] as const).map(([key,title])=><label key={key} className="field-label">{title}<input className="form-control mt-2" value={data.brand[key]} onChange={e=>updateBrand(key,e.target.value)}/></label>)}</div></div>
+  <div className="editor-panel"><h2 className="font-display display-font text-3xl mb-6">Los precios</h2><div className="grid sm:grid-cols-2 gap-5"><label className="field-label">Kit, €/m²<input className="form-control mt-2" type="number" min={1} value={data.pricing.kitPerM2} onChange={e=>updatePrice('kitPerM2',e.target.value)}/></label><label className="field-label">Montaje, €/m²<input className="form-control mt-2" type="number" min={0} value={data.pricing.assemblyPerM2} onChange={e=>updatePrice('assemblyPerM2',e.target.value)}/></label></div><label className="field-label mt-6">Criterio de medición<textarea className="form-control mt-2" rows={3} value={data.pricing.surfaceCriterion} onChange={e=>updatePrice('surfaceCriterion',e.target.value)}/></label><label className="field-label mt-5">Texto fiscal<textarea className="form-control mt-2" rows={2} value={data.pricing.taxNote} onChange={e=>updatePrice('taxNote',e.target.value)}/></label></div>
+  <div className="editor-panel"><h2 className="font-display display-font text-3xl mb-6">Las viviendas</h2><div className="space-y-7">{data.models.map((m,i)=><div key={m.slug} className="border-t border-line pt-6"><p className="eyebrow text-sage mb-4">Modelo {i+1}</p><div className="grid sm:grid-cols-3 gap-3"><label className="field-label">Nombre<input className="form-control mt-2" value={m.name} onChange={e=>updateModel(i,'name',e.target.value)}/></label><label className="field-label">Superficie m²<input type="number" className="form-control mt-2" value={m.area} onChange={e=>updateModel(i,'area',e.target.value)}/></label><label className="field-label">Clave de imágenes<input className="form-control mt-2" value={m.visualKey} onChange={e=>updateModel(i,'visualKey',e.target.value)}/></label></div><label className="field-label mt-4">Descripción<textarea className="form-control mt-2" value={m.description} onChange={e=>updateModel(i,'description',e.target.value)}/></label></div>)}</div></div>
+ </div><aside className="lg:sticky lg:top-[100px] self-start bg-[#e6ebe1] p-7"><h2 className="font-display display-font text-3xl mb-5">Exportar cambios.</h2><p className="text-sm text-muted leading-7">El editor genera un archivo JSON que sustituye a <code>src/config/catalog.json</code>. Después, vuelve a desplegar la web. Las imágenes se sustituyen en <code>public/images/</code> y los planos en <code>public/plans/</code> con los nombres definidos.</p><div className="border-t border-[#bdc7ba] mt-6 pt-6"><p className="eyebrow text-sage">Precio actual del kit</p><p className="font-display display-font text-5xl mt-2">{data.pricing.kitPerM2} €<span className="text-lg">/m²</span></p><p className="text-sm mt-4">Kit + montaje: <strong>{Number(data.pricing.kitPerM2)+Number(data.pricing.assemblyPerM2)} €/m²</strong></p></div>{error&&<p className="text-red-700 text-sm my-3" role="alert">{error}</p>}<button onClick={save} className="button-solid mt-7 w-full"><Download size={16}/> Descargar catalog.json</button><button onClick={()=>{setData(structuredClone(original));setError('')}} className="button-outline mt-3 w-full"><RotateCcw size={15}/> Restaurar cambios locales</button><p className="note mt-5">Este editor no guarda los datos en línea. Para edición directa en producción sería necesario integrar un CMS autenticado.</p></aside></div>
+}

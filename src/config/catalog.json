@@ -1,0 +1,56 @@
+{
+  "brand": {
+    "name": "CELAR",
+    "descriptor": "Viviendas de hormigón celular en kit",
+    "tagline": "Diseño para empezar de otra manera.",
+    "phone": "",
+    "email": "",
+    "whatsappNumber": ""
+  },
+  "pricing": {
+    "kitPerM2": 700,
+    "assemblyPerM2": 350,
+    "surfaceCriterion": "Superficie de referencia presupuestada; criterio exacto de medición pendiente de validación comercial.",
+    "taxNote": "Impuestos no calculados. El tratamiento fiscal se concretará en la oferta.",
+    "rangeMin": 50,
+    "rangeMax": 400
+  },
+  "models": [
+    {
+      "slug": "origen-90",
+      "name": "Origen",
+      "area": 90,
+      "subtitle": "La belleza de lo esencial.",
+      "description": "Una propuesta compacta de una planta, pensada para disfrutar de espacios abiertos y luz natural.",
+      "levels": "1 planta · distribución orientativa",
+      "visualKey": "origen"
+    },
+    {
+      "slug": "patio-120",
+      "name": "Patio",
+      "area": 120,
+      "subtitle": "La vida alrededor de la luz.",
+      "description": "Arquitectura en L que plantea una relación natural entre las zonas interiores y un patio exterior.",
+      "levels": "1 planta · distribución orientativa",
+      "visualKey": "patio"
+    },
+    {
+      "slug": "horizonte-150",
+      "name": "Horizonte",
+      "area": 150,
+      "subtitle": "Amplitud sin renunciar a la calma.",
+      "description": "Una vivienda lineal de proporciones generosas, con apertura al jardín y flexibilidad de distribución.",
+      "levels": "1 planta · distribución orientativa",
+      "visualKey": "horizonte"
+    },
+    {
+      "slug": "linea-180",
+      "name": "Línea",
+      "area": 180,
+      "subtitle": "Más espacio para imaginar.",
+      "description": "Una propuesta de dos niveles y presencia arquitectónica, con ambientes pensados para evolucionar.",
+      "levels": "2 plantas · distribución orientativa",
+      "visualKey": "linea"
+    }
+  ]
+}
