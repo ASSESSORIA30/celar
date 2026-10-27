@@ -1,8 +1,9 @@
 {
   "brand": {
-    "name": "CELAR",
-    "descriptor": "Viviendas de hormigón celular en kit",
-    "tagline": "Diseño para empezar de otra manera.",
+    "name": "NoLimits Blocks",
+    "descriptor": "Kits estructurales de hormigón celular",
+    "tagline": "Nosotros ponemos la estructura. Tú haces el resto.",
+    "domain": "nolimitsblocks.com",
     "phone": "",
     "email": "",
     "whatsappNumber": ""
@@ -10,47 +11,25 @@
   "pricing": {
     "kitPerM2": 700,
     "assemblyPerM2": 350,
-    "surfaceCriterion": "Superficie de referencia presupuestada; criterio exacto de medición pendiente de validación comercial.",
-    "taxNote": "Impuestos no calculados. El tratamiento fiscal se concretará en la oferta.",
+    "surfaceCriterion": "Superficie estructural de referencia presupuestada. Medición y composición final sujetas a validación técnica.",
+    "taxNote": "Importes orientativos sin impuestos calculados. Transporte y extras se detallan aparte.",
     "rangeMin": 50,
     "rangeMax": 400
   },
+  "shipping": {
+    "originPostalCode": "25142",
+    "originLabel": "Bellvís (Lleida)",
+    "description": "Coste de transporte calculado según distancia estimada por carretera entre zonas postales. El acceso de camiones, descargas y situaciones especiales se confirman por separado."
+  },
+  "extras": [
+    {"id": "terraza", "name": "Terraza estructural", "description": "Ampliación de estructura para terraza; sin pavimento, impermeabilización ni acabados.", "unit": "m2", "defaultQuantity": 20, "pricePerUnit": null},
+    {"id": "garaje", "name": "Garaje estructural", "description": "Volumen estructural para garaje; sin puerta, instalaciones ni acabados.", "unit": "m2", "defaultQuantity": 25, "pricePerUnit": null},
+    {"id": "piscina", "name": "Piscina a presupuestar", "description": "Actuación independiente del kit de hormigón celular. Alcance, sistema, excavación, instalaciones e impermeabilización sujetos a estudio.", "unit": "unidad", "defaultQuantity": 1, "pricePerUnit": null}
+  ],
   "models": [
-    {
-      "slug": "origen-90",
-      "name": "Origen",
-      "area": 90,
-      "subtitle": "La belleza de lo esencial.",
-      "description": "Una propuesta compacta de una planta, pensada para disfrutar de espacios abiertos y luz natural.",
-      "levels": "1 planta · distribución orientativa",
-      "visualKey": "origen"
-    },
-    {
-      "slug": "patio-120",
-      "name": "Patio",
-      "area": 120,
-      "subtitle": "La vida alrededor de la luz.",
-      "description": "Arquitectura en L que plantea una relación natural entre las zonas interiores y un patio exterior.",
-      "levels": "1 planta · distribución orientativa",
-      "visualKey": "patio"
-    },
-    {
-      "slug": "horizonte-150",
-      "name": "Horizonte",
-      "area": 150,
-      "subtitle": "Amplitud sin renunciar a la calma.",
-      "description": "Una vivienda lineal de proporciones generosas, con apertura al jardín y flexibilidad de distribución.",
-      "levels": "1 planta · distribución orientativa",
-      "visualKey": "horizonte"
-    },
-    {
-      "slug": "linea-180",
-      "name": "Línea",
-      "area": 180,
-      "subtitle": "Más espacio para imaginar.",
-      "description": "Una propuesta de dos niveles y presencia arquitectónica, con ambientes pensados para evolucionar.",
-      "levels": "2 plantas · distribución orientativa",
-      "visualKey": "linea"
-    }
+    {"slug":"origen-90","name":"Bloque 90","area":90,"subtitle":"La estructura esencial.","description":"Concepto estructural compacto de una planta, abierto para que definas y ejecutes los interiores conforme a tu proyecto.","levels":"1 planta · esquema ilustrativo","visualKey":"origen"},
+    {"slug":"patio-120","name":"Bloque 120","area":120,"subtitle":"Construye alrededor del patio.","description":"Propuesta de geometría en L concebida como soporte estructural de un futuro proyecto interior personalizado.","levels":"1 planta · esquema ilustrativo","visualKey":"patio"},
+    {"slug":"horizonte-150","name":"Bloque 150","area":150,"subtitle":"Volumen, luz y libertad de distribución.","description":"Solución longitudinal orientativa para quienes buscan una mayor superficie estructural y quieren resolver los interiores por su cuenta.","levels":"1 planta · esquema ilustrativo","visualKey":"horizonte"},
+    {"slug":"linea-180","name":"Bloque 180","area":180,"subtitle":"Dos niveles, infinitas posibilidades.","description":"Concepto de dos niveles. La viabilidad estructural, forjados, escaleras y encuentros se validan en el proyecto técnico; no se presuponen incluidos por la imagen.","levels":"2 plantas · esquema ilustrativo","visualKey":"linea"}
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "name": "celar-casas-kit",
+  "name": "nolimitsblocks-kits-estructurales",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "smoke": "node scripts/smoke-check.mjs",
     "syntax": "node scripts/syntax-check.mjs",
-    "test:pricing": "node scripts/real-pricing-test.mjs"
+    "test:pricing": "node scripts/real-pricing-test.mjs",
+    "test:transport": "node scripts/test-transport.mjs"
   },
   "dependencies": {
     "next": "^15.5.0",

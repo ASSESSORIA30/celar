@@ -1,10 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 660" width="980" height="660">
-<defs><pattern id="grid" width="25" height="25" patternUnits="userSpaceOnUse"><path d="M 25 0 L 0 0 0 25" fill="none" stroke="#e9e8e2" stroke-width="1"/></pattern></defs>
-<rect width="980" height="660" fill="#f7f6f1"/><rect width="980" height="660" fill="url(#grid)"/>
-<text x="72" y="64" font-family="Arial,sans-serif" font-size="14" fill="#6d766d" letter-spacing="3">CELAR / ESQUEMA CONCEPTUAL</text>
-<text x="72" y="102" font-family="Georgia,serif" font-size="36" fill="#28302a">Horizonte / 150 m²</text>
-<rect x="100" y="220" width="400" height="280" fill="#eee7d7" stroke="#303e36" stroke-width="5"/><text x="300.0" y="360.0" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-size="17" fill="#485449">Zona de día</text><rect x="500" y="220" width="160" height="280" fill="#e8e5da" stroke="#303e36" stroke-width="5"/><text x="580.0" y="360.0" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-size="17" fill="#485449">Distribuidor</text><rect x="660" y="220" width="220" height="142" fill="#e8e5da" stroke="#303e36" stroke-width="5"/><text x="770.0" y="291.0" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-size="17" fill="#485449">Zona privada</text><rect x="660" y="362" width="220" height="138" fill="#e8e5da" stroke="#303e36" stroke-width="5"/><text x="770.0" y="431.0" text-anchor="middle" dominant-baseline="middle" font-family="Arial,sans-serif" font-size="17" fill="#485449">Servicios</text><line x1="145" y1="500" x2="390" y2="500" stroke="#b59b76" stroke-width="8"/><line x1="700" y1="220" x2="820" y2="220" stroke="#b59b76" stroke-width="8"/>
-<line x1="72" x2="908" y1="596" y2="596" stroke="#d8d9d2" />
-<text x="72" y="626" font-family="Arial,sans-serif" font-size="13" fill="#69756d">Distribución ilustrativa · No es un plano técnico ni proyecto ejecutivo</text>
-<text x="882" y="625" text-anchor="end" font-family="Arial,sans-serif" font-size="14" fill="#69756d">N ↑</text>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 650" role="img" aria-label="Esquema conceptual de huella de la estructura sin distribución interior">
+ <defs><pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#dde1df" stroke-width="1"/></pattern></defs>
+ <style>.shell{stroke:#263239;stroke-width:21;stroke-linecap:square;stroke-linejoin:miter;fill:none}.ghost{fill:none;stroke:#9fa9a7;stroke-width:3;stroke-dasharray:9 9}.small{font:bold 12px Arial,sans-serif;fill:#68777b;letter-spacing:1px}.big{font:900 30px Arial,sans-serif;fill:#263239;letter-spacing:-1px}</style>
+ <rect width="980" height="650" fill="#fafaf7"/><rect x="40" y="90" width="900" height="500" fill="url(#grid)"/>
+ <rect x="40" y="80" width="900" height="4" fill="#d8ae4e"/>
+ <text x="42" y="53" class="big">BLOQUE / HORIZONTE</text>
+ <text x="650" y="53" class="small">VOLUMEN NO EJECUTIVO</text>
+ <g class="shell"><path d="M90 195H860V480H90Z"/><path d="M315 195V480 M635 195V480" class="ghost"/></g>
+ <text x="42" y="620" class="small">MUROS ILUSTRATIVOS · NO DEFINE COMPONENTES SUMINISTRADOS</text>
+ </svg>

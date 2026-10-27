@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { leadSchema } from '@/lib/lead-schema';
 import { euro, quotePrice } from '@/lib/pricing';
-import { siteConfig, models } from '@/config/site';
+import { siteConfig, models, defaultExtraSelections } from '@/config/site';
+import { extrasQuote } from '@/lib/pricing';
+import { calculateShipping } from '@/server/transport';
 export const runtime='nodejs';
 const localLimits=new Map<string,{count:number;expires:number}>();
 const WINDOW=15*60*1000;const MAX=5;
@@ -10,7 +12,7 @@ async function rateLimit(ip:string):Promise<boolean>{
  const now=Date.now(); const url=process.env.UPSTASH_REDIS_REST_URL;const token=process.env.UPSTASH_REDIS_REST_TOKEN;
  if(url&&token){
    try{
-     const res=await fetch(`${url}/pipeline`,{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify([['INCR',`celar:rate:${ip}:${Math.floor(now/WINDOW)}`],['EXPIRE',`celar:rate:${ip}:${Math.floor(now/WINDOW)}`,900]]),cache:'no-store'});
+     const res=await fetch(`${url}/pipeline`,{method:'POST',headers:{Authorization:`Bearer ${token}`,'Content-Type':'application/json'},body:JSON.stringify([['INCR',`nolimitsblocks:rate:${ip}:${Math.floor(now/WINDOW)}`],['EXPIRE',`nolimitsblocks:rate:${ip}:${Math.floor(now/WINDOW)}`,900]]),cache:'no-store'});
      if(!res.ok)return false;
      const out=await res.json() as {result?:number}[];
      return Number(out[0]?.result)<=MAX;
@@ -46,16 +48,27 @@ export async function POST(req:NextRequest){
  }
  const q=quotePrice(lead.area,lead.mode);
  const house=models.find(m=>m.slug===lead.modelSlug);
+ const selected=defaultExtraSelections();
+ for(const item of lead.extras)selected[item.id]={selected:true,quantity:item.quantity};
+ const extrasResult=extrasQuote(selected);
+ let shippingAmount:number|null=null;
+ let distanceKm:number|null=null;
+ try { const shipping=await calculateShipping(lead.postalCode);shippingAmount=shipping.amount;distanceKm=shipping.distanceKm; }
+ catch(error){console.error('Lead shipping lookup pending',error instanceof Error ? error.message : 'unknown');}
+ const subtotal=q.total+extrasResult.calculated+(shippingAmount??0);
+ const extralines=extrasResult.lines.map(x=>`${x.name}: ${x.quantity} ${x.unit}, ${x.amount===null?'pendiente de presupuestar':euro(x.amount)}`);
  const text=[
    `Nueva solicitud desde ${siteConfig.brand.name}`,
    `Nombre: ${lead.name}`,`Teléfono: ${lead.phone}`,`Email: ${lead.email}`,
-   `Provincia: ${lead.province}`,`Terreno: ${lead.hasLand}`,
+   `Provincia: ${lead.province}`,`CP entrega: ${lead.postalCode}`,`Terreno: ${lead.hasLand}`,
    `Modelo: ${house?house.name:'Personalizado'}`,`Superficie: ${lead.area} m²`,
    `Modalidad: ${lead.mode==='kit'?'Solo kit':'Kit + montaje'}`,
    `Kit: ${euro(q.kit)}`,`Montaje: ${lead.mode==='kit'?'No incluido':euro(q.assembly)}`,
-   `Total orientativo sin impuestos calculados: ${euro(q.total)}`,
+   `Transporte: ${shippingAmount===null?'pendiente de calcular':euro(shippingAmount)}`,`Distancia por carretera: ${distanceKm===null?'pendiente':`${distanceKm} km`}`,
+   ...(extralines.length?extralines:['Extras: No solicitados']),
+   `${shippingAmount===null||extrasResult.pending?'Subtotal conocido':'Total orientativo del kit y opciones conocidas'}: ${euro(subtotal)} (impuestos no calculados)`,
    `Mensaje: ${lead.message||'—'}`,
-   `Privacidad aceptada: Sí`,`Alcance sujeto a validación.`
+   `Privacidad aceptada: Sí`,`SOLO ESTRUCTURA: sin interiores ni acabados. Alcance sujeto a validación.`
  ].join('\n');
  try {
    const send=await fetch('https://api.resend.com/emails',{

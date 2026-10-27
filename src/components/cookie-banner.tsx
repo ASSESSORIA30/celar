@@ -1,15 +1,15 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-const KEY='celar-cookie-preferences';
+const KEY='nolimitsblocks-cookie-preferences';
 export function CookieBanner() {
   const [open,setOpen]=useState(false);
   const [custom,setCustom]=useState(false);
   const [analytics,setAnalytics]=useState(false);
   useEffect(()=>{
     try{const current=localStorage.getItem(KEY);setOpen(!current);if(current)setAnalytics(JSON.parse(current).analytics===true)}catch{setOpen(true)}
-    const handler=()=>{setCustom(true);setOpen(true)};window.addEventListener('celar:open-cookies',handler);
-    return ()=>window.removeEventListener('celar:open-cookies',handler);
+    const handler=()=>{setCustom(true);setOpen(true)};window.addEventListener('nolimitsblocks:open-cookies',handler);
+    return ()=>window.removeEventListener('nolimitsblocks:open-cookies',handler);
   },[]);
   const save=(enabled:boolean)=>{try{localStorage.setItem(KEY,JSON.stringify({essential:true,analytics:enabled,date:new Date().toISOString()}))}catch{}setOpen(false)};
   if(!open)return null;

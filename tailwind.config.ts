@@ -1,20 +1,11 @@
 import type { Config } from 'tailwindcss';
 export default {
-  content: ['./src/**/*.{ts,tsx}'],
-  theme: {
-    extend: {
-      colors: {
-        paper: '#F5F4EF', ink: '#253029', muted: '#6F786F', sage: '#788775',
-        sand: '#C9B393', line: '#E3E3DC', deep: '#202B25', bone: '#ECE9E2'
-      },
-      fontFamily: {
-        sans: ['Arial', 'Helvetica Neue', 'sans-serif'],
-        display: ['Iowan Old Style', 'Baskerville', 'Georgia', 'serif']
-      },
-      boxShadow: {
-        floating: '0 24px 60px rgba(21,37,27,0.12)'
-      }
-    }
-  },
-  plugins: []
+  content:['./src/**/*.{ts,tsx}'],
+  theme:{extend:{
+   colors:{
+    paper:'#F2F1EC',ink:'#192126',muted:'#657077',sage:'#B88B2C',sand:'#D9B15B',line:'#DCE0DF',deep:'#192126',bone:'#E8E9E5'
+   },
+   fontFamily:{sans:['Arial','Helvetica Neue','sans-serif'],display:['Arial Narrow','Arial','Helvetica Neue','sans-serif']},
+   boxShadow:{floating:'0 24px 60px rgba(20,25,30,.14)'}
+  }},plugins:[]
 } satisfies Config;

@@ -1,25 +1,20 @@
-# CELAR — Viviendas en kit de hormigón celular
+# NoLimits Blocks — Web de kits estructurales de hormigón celular
 
-**Proyecto web Next.js, React, TypeScript y Tailwind CSS (App Router)**. Identidad provisional y renders conceptuales originales. El objetivo es captar solicitudes de kits de construcción con presupuesto orientativo verificable y sin presentar el producto como una vivienda terminada.
+Proyecto **Next.js App Router / React / TypeScript / Tailwind CSS** preparado para desplegar en Vercel. Se ha adaptado desde la anterior web CELAR: identidad industrial NoLimits Blocks, catálogo de estructuras sin interiores, configurador con transporte por CP y solicitud de extras de terraza, garaje y piscina.
 
-## Qué contiene
+> **Importante:** NoLimits Blocks es un nombre comercial propuesto. El dominio `nolimitsblocks.com` no se ha registrado ni conectado por esta entrega. No se afirma que la empresa disponga de una fábrica física propia. Todas las fotos son renders generados e ilustrativos, y nunca se ofrecen como fotos de obras o instalaciones reales de la empresa.
 
-- Página de inicio editorial con arquitectura mediterránea y CTA.
-- Catálogo de **cuatro modelos conceptuales** (90, 120, 150 y 180 m²) y una página por modelo.
-- **16 perspectivas arquitectónicas generadas** (4 por modelo), con galería ampliable, y **4 esquemas de planta conceptuales** debidamente identificados.
-- Configurador común entre secciones: precio kit, montaje opcional, transporte y planos, exclusiones e impuestos no calculados.
-- **Descarga de presupuesto PDF real** desde navegador usando jsPDF.
-- Compartir presupuesto por WhatsApp. Si se configura el número de la empresa, se dirige directamente al chat empresarial.
-- Formulario con resumen de presupuesto, validación en servidor, consentimiento, honeypot y limitación básica de solicitudes. Envío real mediante Resend, **solo cuando hay credenciales válidas y el proveedor confirma la operación**.
-- Integración opcional con Cloudflare Turnstile y rate limiting persistente mediante Upstash.
-- Secciones de alcance del kit, construcción, proceso, material, FAQ, contacto y legales.
-- Metadatos, Open Graph, sitemap y robots generados.
-- Editor local en `/editor`: cambia precios, marca y catálogo y exporta `catalog.json`. **No escribe al servidor**.
-- Preparación inicial de diccionarios español/catalán en `src/i18n/messages.ts`. Las páginas comerciales están actualmente en español; la publicación completa en catalán requiere traducirlas y activar rutas de idioma.
+## Qué comercializa
 
-## Puesta en marcha
+- **Solo kit estructural:** `700 €/m²` de superficie de referencia, planos del kit incluidos.
+- **Kit + montaje estructural:** `1.050 €/m²` de referencia (montaje adicional `350 €/m²`).
+- **Transporte:** concepto **adicional** estimado en base a distancia real por carretera desde el CP `25142` (Bellvís, Lleida) hasta el CP de destino. La tarifa interna reside exclusivamente en `src/server/transport.ts` y **no se muestra en el cliente**. Se calcula una expedición orientativa y los accesos, descargas, viajes adicionales y logística especial deben validarse.
+- **Extras:** terraza estructural, garaje estructural, piscina (independiente del kit). Precios `null` = **sujetos a presupuesto**. No se suman importes ficticios. Se pueden fijar precios al confirmar condiciones.
+- **No es una vivienda llave en mano:** no incluye instalaciones ni acabados interiores. El resto de elementos no incluidos expresamente, forjados/cubiertas, cimentación, carpinterías, proyecto visado, permisos y detalles técnicos requieren su propia definición contractual.
 
-Necesitas **Node 22 o superior**, npm y acceso al registro de paquetes.
+## Inicio y comprobaciones
+
+Necesitas **Node.js 22** y npm con acceso al registro de paquetes.
 
 ```bash
 npm install
@@ -27,117 +22,68 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Abre `http://localhost:3000`. No hace falta configurar el correo para ver el sitio o calcular precios; **sí es obligatorio configurarlo para recibir solicitudes**.
-
-Para probar antes de publicar:
+Abrir `http://localhost:3000`. Para validar:
 
 ```bash
 npm run typecheck
-npm run lint
-npm run smoke
 npm run build
+npm run smoke
+npm run syntax
+npm run test:pricing
+npm run test:transport
 ```
 
-Después puedes importar el repositorio en **Vercel**; Framework Preset: Next.js; Build Command: `npm run build`; Node: 22; Output: configuración estándar de Next.js.
+> En este entorno se han podido ejecutar los tests de sintaxis, presupuesto, recursos y transporte simulado, así como probar la vista previa HTML en Chromium. La instalación de dependencias npm agotó el tiempo disponible; **NO** se pudo ejecutar `next build` real. Hacer `npm install`, `npm run typecheck` y `npm run build` en un equipo con conexión o dentro de Vercel antes de producción.
 
-### Estado de la verificación
+## Desplegar en Vercel
 
-En el entorno en que se preparó el proyecto, la conexión a `registry.npmjs.org` no estaba disponible. Por tanto **no se descargaron dependencias ni se pudo ejecutar una compilación real de Next.js**. Sí se ejecutaron el comprobador de sintaxis TypeScript y pruebas de coherencia de recursos y cálculos. **Ejecuta obligatoriamente `npm install`, `npm run typecheck` y `npm run build` en tu equipo/CI antes de publicar.** No se declara falsamente que el build esté validado.
+Una vez que el proyecto esté en un repositorio GitHub (o mediante la CLI):
 
-## Editor y configuración centralizada
+1. [Crear proyecto en Vercel](https://vercel.com/new) → importar repositorio → framework Next.js, carpeta raíz del proyecto.
+2. Configurar variables de entorno en **Settings → Environment Variables**.
+3. Deploy, comprobar Build Logs, navegar a `/calculadora`, `/transporte`, `/viviendas` y `/contacto`.
+4. Al confirmar propiedad de `nolimitsblocks.com`, añadirlo en **Domains**, configurar DNS y poner `NEXT_PUBLIC_SITE_URL=https://nolimitsblocks.com`.
+5. Completar textos jurídicos y razón social/privacidad antes de abrir a visitantes comerciales.
 
-Toda la configuración editable está en:
+También se puede desplegar por terminal con `npx vercel` y, tras validar, `npx vercel --prod`.
 
-`src/config/catalog.json`
+## Variables de entorno
 
-Este archivo contiene la marca, datos de contacto, precios por m², texto de impuestos, criterio de superficie y modelos. El componente `src/config/site.ts` exporta esos datos.
+| Variable | Uso | Estado |
+| --- | --- | --- |
+| `GOOGLE_MAPS_API_KEY` | Clave **solo servidor** para Geocoding API + Routes API; requiere habilitar ambas APIs y facturación Google Cloud | **Obligatoria para transporte automático fuera de CP 25142** |
+| `RESEND_API_KEY` | Proveedor de envío de formularios | Obligatoria para captación real |
+| `LEADS_TO_EMAIL` | Dirección receptora de leads | Obligatoria para captación real |
+| `FROM_EMAIL` | Remitente verificado en Resend | Obligatoria para captación real |
+| `NEXT_PUBLIC_SITE_URL` | URL real para SEO, metadatos, sitemap | Opcional en Vercel (autodetecta URL) |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` | Protección adicional anti-bot | Recomendadas |
+| `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | Límite distribuido de formularios | Recomendado |
 
-También puedes acceder a `http://localhost:3000/editor`, cambiar los campos y descargar un `catalog.json` actualizado, que debes colocar en `src/config/` y volver a desplegar. El editor es **deliberadamente local**: no hay CMS, base de datos, credenciales, autenticación administrativa ni falsa confirmación de publicación. Si se desea edición remota, será necesario integrar un CMS autenticado y despliegues controlados.
+Si `GOOGLE_MAPS_API_KEY` no existe o los servicios de Google fallan, el calculador **no inventa distancias**: presenta «Transporte pendiente» e indica la integración faltante. Los formularios pueden seguir recibiendo solicitudes con CP para valorar manualmente el envío, siempre que Resend esté configurado.
 
-Los renders de cada modelo se guardan en:
+El proveedor requiere activar **Geocoding API** y **Routes API** y una cuenta de facturación. El proyecto envía el CP a Google desde el servidor; añadir este destinatario del dato y el fundamento aplicable a la política de privacidad antes de publicación. Limitar la clave por API y configurar alertas de cuota y presupuesto.
 
-- `public/images/{visualKey}-fachada.webp`
-- `public/images/{visualKey}-posterior.webp`
-- `public/images/{visualKey}-aerea.webp`
-- `public/images/{visualKey}-detalle.webp`
+## Estructura editable
 
-Los esquemas de planta están en `public/plans/{visualKey}.svg`. Para reemplazar un modelo, cambie sus datos e imágenes. Son **materiales conceptuales**, no planos ejecutivos ni garantías de lo que se entrega.
+- `src/config/catalog.json` — marca, dominio, precios de estructura y montaje, modelo, extras y definiciones.
+- `src/config/site.ts` — textos de alcance y preguntas frecuentes; **sin tarifa interna de envío**.
+- `src/server/transport.ts` — cálculo real por carretera, origen y tarifa interna; servidor.
+- `src/app/api/transporte/route.ts` — endpoint POST de CP y cálculo real con estado controlado.
+- `src/components/quote-context.tsx` — mantiene opciones y CP del visitante durante la navegación.
+- `src/components/quote-builder.tsx`, `extras-selector.tsx`, `shipping-field.tsx` — cotizador, extras y transporte.
+- `src/components/lead-form.tsx` y `src/app/api/lead/route.ts` — formulario con validación y correo confirmado por proveedor.
+- `src/lib/pdf.ts` — ficha PDF cliente con subtotal conocido, envío y extras pendientes.
+- `src/app/transporte/page.tsx` — calculador independiente de envío.
+- `public/images/` — renders generados de estructuras sin acabados y fábrica conceptual.
+- `public/plans/` — esquemas estructurales conceptuales, NO planos de ejecución.
 
-## Reglas de precio
+El editor local en `/editor` permite cambiar marca, precios del kit, precios de extras (cuando se confirmen) y modelos, y descargar el JSON. **No guarda cambios en producción**: hay que sustituir `src/config/catalog.json` y volver a desplegar.
 
-En `src/lib/pricing.ts` se calcula siempre:
+## Notas de alcance y seguridad
 
-- `kit = superficie * pricing.kitPerM2`
-- `montaje = superficie * pricing.assemblyPerM2` solo si se selecciona montaje
-- `total = kit + montaje`
-
-**Ejemplo de 120 m²:** kit **84.000 €**; montaje opcional **42.000 €**; total kit con montaje **126.000 €**. No se calcula IVA ni se presupone un tipo.
-
-La superficie es de referencia hasta fijar por escrito el criterio de medición. El rango del configurador se encuentra en JSON y se valida en el servidor.
-
-## Formulario: configuración para envíos reales
-
-En `.env.local` o las Environment Variables de Vercel:
-
-```dotenv
-RESEND_API_KEY=re_...
-LEADS_TO_EMAIL=presupuestos@tuempresa.com
-FROM_EMAIL=Web <contacto@tudominioverificado.com>
-NEXT_PUBLIC_SITE_URL=https://tudominio.com
-```
-
-Registra y verifica en Resend el dominio utilizado por `FROM_EMAIL`. Por motivos de seguridad, nunca coloques `RESEND_API_KEY` en variables `NEXT_PUBLIC_*`.
-
-Opcionales:
-
-```dotenv
-NEXT_PUBLIC_TURNSTILE_SITE_KEY=...
-TURNSTILE_SECRET_KEY=...
-UPSTASH_REDIS_REST_URL=...
-UPSTASH_REDIS_REST_TOKEN=...
-```
-
-Configura Turnstile con ambas variables conjuntamente. Para tráfico de producción, se recomienda el limitador persistente Upstash; la limitación en memoria incluida es solo una protección de base y no se comparte entre instancias serverless.
-
-**Comportamiento intencional:** si Resend está sin configurar, el endpoint devuelve HTTP 503 y el usuario ve un error real. Si el proveedor no confirma aceptación con ID, también se muestra error. No se guardan leads en una base de datos ni se afirma que el formulario se haya enviado cuando no es cierto.
-
-El formulario incluye consentimiento, provincia, terreno, modalidad, superficie y otros datos. La integración de un CRM queda pendiente de definir; se puede implementar con un webhook seguro **desde el servidor y con su propia autenticación**, después de validar condiciones de privacidad.
-
-## WhatsApp y analítica
-
-Configura `brand.whatsappNumber` con el número internacional de la empresa, sin símbolos (por ejemplo `34XXXXXXXXX`). Mientras esté vacío, el botón solo permite **compartir** el texto con WhatsApp; no envía un mensaje a la empresa.
-
-El módulo `src/lib/analytics.ts` prepara eventos sin PII: visita a modelo, cambios de configurador, PDF y solicitudes confirmadas. Los eventos solo se generan con consentimiento analítico en navegador y **no se envían a ningún proveedor mientras no se integre uno**. Para una medición persistente debe añadirse el proveedor y documentarlo en cookies/privacidad.
-
-El banner permite rechazar, aceptar o personalizar las preferencias. Se pueden reabrir desde el footer. No se cargan scripts de rastreo opcionales por defecto.
-
-## SEO
-
-Configura `NEXT_PUBLIC_SITE_URL` con el dominio real antes del despliegue. El sitemap usa esta variable; sin ella genera rutas de entorno local. Los metadatos describen el producto sin utilizar casos de éxito, prestaciones técnicas no verificadas o marcas ajenas.
-
-`src/i18n/messages.ts` incluye un diccionario ES/CA inicial, pero todavía **no hay URLs `ca/` ni hreflang operativo**; para el sitio bilingüe final se deben traducir los textos de todas las rutas antes de activarlas.
-
-## Legal y comercial: imprescindible completar antes de publicar
-
-1. Identidad jurídica del vendedor, NIF, domicilio, contacto y políticas definitivas de privacidad/cookies, revisadas por asesor legal. Las páginas están marcadas **borrador**.
-2. Descripción técnica definitiva de los componentes del kit, compatibilidades y marcas/fichas técnicas verificadas.
-3. Qué planos se entregan y si el proyecto visado u otros documentos están excluidos/incluidos.
-4. Condiciones y radio del transporte, descarga y logística.
-5. Criterio de medición m², alcance contractual del montaje y partidas de obra no incluidas.
-6. Alcance de cubierta, cimentación, carpinterías, impermeabilización, aislamientos y demás trabajos que permanecen **pendientes de confirmación**.
-7. Fiscalidad aplicable, política comercial y condiciones de contratación.
-8. Revisión arquitectónica y normativa para modelos reales: los cuatro modelos actuales son **ejemplos** y las imágenes representan escenas completas (incluyendo piscina y acabados) **que no se incluyen en el kit**.
-9. Verificación de dominio, funcionamiento del correo, privacidad y controles anti-spam en producción.
-10. Publicar un idioma catalán completo solo tras su traducción integral.
-
-### Recursos visuales
-
-Los renders del sitio fueron generados específicamente para este proyecto y se identifican como imágenes conceptuales. Los planos SVG son esquemas ilustrativos creados para el catálogo, **no proyectos constructivos válidos**. No se utilizan fotografías atribuidas a obras propias inexistentes ni testimonios inventados.
-
-## Vista previa sin servidor
-
-Se incluye `preview.html`, una **vista previa autónoma** que puede abrirse para examinar diseño y probar el cálculo aun sin instalar Next.js. Sus funciones son deliberadamente limitadas: la generación PDF utiliza el diálogo de impresión del navegador y no envía correos. La implementación que se desplegaría en Vercel es el proyecto Next.js en `src/`.
-
----
-
-Marca **CELAR**: nombre de trabajo editable, pendiente de verificación comercial y de disponibilidad registral.
+- El CP es obligatorio para el formulario comercial. La ruta toma como origen el CP `25142`, no una dirección exacta; la estimación no reemplaza logística final.
+- No se muestran testimonios, plazos garantizados, certificaciones inexistentes, viviendas terminadas ni garantías constructivas no aportadas.
+- Las ilustraciones de bloques y cubiertas no prueban que las mismas piezas estén dentro del kit. Es obligatorio validar componentes, encuentros, huecos, cubierta, accesos y maquinaria en una ficha técnica.
+- Las claves nunca van al navegador; no añadir `NEXT_PUBLIC_` a la clave Google ni Resend. Revisar cuotas, antiabuso y avisos legales antes de usar con tráfico real.
+- `preview.html` es una vista previa autónoma: su configurador local muestra solo kit y montaje, **no rutas reales ni envío de formularios**. Para ello hay que desplegar la app Next.js.
+- El proyecto conserva soporte de textos iniciales español/catalán en `src/i18n/messages.ts`; las páginas de este lanzamiento están en castellano.
